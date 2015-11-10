@@ -127,6 +127,3 @@ if ! [ -L "/etc/nginx/sites-enabled/my_default" ]; then
 	ln -s /etc/nginx/sites-available/my_default /etc/nginx/sites-enabled/my_default; 
 fi
 
-
-# service nginx restart
-# service php5-fpm restart
