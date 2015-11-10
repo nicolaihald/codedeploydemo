@@ -5,6 +5,7 @@ apt-get update -q
 
 # Install some PPAs
 apt-get install -y software-properties-common curl
+apt-get install -q -y zip
 
 apt-add-repository ppa:nginx/stable -y
 
@@ -52,15 +53,41 @@ fi
 if [ "/etc/nginx/sites-available/default" ]; then
    rm /etc/nginx/sites-available/default
 fi
-#rm /etc/nginx/sites-enabled/default
-#rm /etc/nginx/sites-available/default
+
+
+# Backup/configure nginx application
+# ==================================
+time_stamp=$(date +%Y_%m_%d_%H_%M_%S)
+ibog_dir="/usr/share/nginx/html/i-bog/"
+ibog_app="/usr/share/nginx/html/i-bog/build/"
+ibog_dir_bak="/usr/share/nginx/i-bog-bak"
+
+if [ -d ${ibog_app} ]; then
+    echo "=> backing up existing app directory: "${ibog_app};
+    mkdir -p "${ibog_dir_bak}/${time_stamp}"
+    cp -r ${ibog_app} "${ibog_dir_bak}/${time_stamp}"
+	rm -dr ${ibog_app}
+else
+    echo "no copy";
+fi
+
+echo "Working directory: " $(pwd)
+
+tmp='/tmp/i-bog/'
+if [ ! -d tmp ]; then
+	mkdir -p tmp
+fi
+
+cp -rf build.zip ${tmp} 	
+# unzip app build:
+unzip ${tmp}build.zip .
 
 
 # backup existing default index.html file:
-if [ "/usr/share/nginx/html/index.html" ]; then
-   sudo cp /usr/share/nginx/html/index.html /usr/share/nginx/html/index.$(date +"%Y%m%d%H%M").html
-   sudo rm /usr/share/nginx/html/index.html   
-fi
+# if [ "/usr/share/nginx/html/index.html" ]; then
+	# sudo cp /usr/share/nginx/html/index.html /usr/share/nginx/html/index.$(date +"%Y%m%d%H%M").html
+	# sudo rm /usr/share/nginx/html/index.html   
+# fi
 
 cat >my_default << EOF
 server {
@@ -74,7 +101,7 @@ server {
 
         location / {
                 # Root should be build-folder
-                #root /usr/share/nginx/html/i-bog/build;
+                root /usr/share/nginx/html/i-bog/build;
 
                 # Fallback to index.php if not found                
 				try_files \$uri \$uri/ /index.php?\$query_string;
@@ -95,7 +122,6 @@ EOF
 
 cp my_default /etc/nginx/sites-available/my_default
 rm my_default
-
 
 # create a symbolic link if it doesn't already exist:
 if ! [ -L "/etc/nginx/sites-enabled/my_default" ]; then 

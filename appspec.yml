@@ -24,8 +24,10 @@ os: linux
 #   "files" section altogether. A blank or incomplete "files" section
 #   may cause associated deployments to fail.
 files:
-  - source: /index.html
-    destination: /usr/share/nginx/html/
+  - source: /build
+    destination: /usr/share/nginx/html/i-bog/
+  - source: /build.zip
+    destination: /tmp/i-bog/
 
 # For deployments to Amazon Linux, Ubuntu Server, or RHEL instances,
 #   you can specify a "permissions" 
@@ -99,6 +101,9 @@ hooks:
 #   in the script specified in "location".
   AfterInstall:
     - location: scripts/change_permissions.sh
+      timeout: 300
+      runas: root
+    - location: scripts/unzip_application.sh
       timeout: 300
       runas: root
 
