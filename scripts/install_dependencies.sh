@@ -15,7 +15,7 @@ apt-get update -q
 # Install Nginx & PHP-FPM
 apt-get install -q -y nginx php5-fpm php5-curl 
 
-service nginx restart
+#service nginx restart
 
 # Setup PHP-FPM Options
 sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
@@ -68,19 +68,17 @@ if [ -d ${ibog_app} ]; then
     cp -r ${ibog_app} "${ibog_dir_bak}/${time_stamp}"
 	rm -dr ${ibog_app}
 else
-    echo "no copy";
+    echo "Directory " ${ibog_app} " doesn't exist. No application directory to copy/backing up!";
 fi
 
-echo "Working directory: " $(pwd)
-
-tmp='/tmp/i-bog/'
-if [ ! -d tmp ]; then
-	mkdir -p tmp
-fi
-
-cp -rf build.zip ${tmp} 	
-# unzip app build:
-unzip ${tmp}build.zip .
+# echo "Working directory: " $(pwd)
+# tmp='/tmp/i-bog/'
+# if [ ! -d tmp ]; then
+	# mkdir -p tmp
+# fi
+# cp -rf build.zip ${tmp} 	
+# # unzip app build:
+# unzip ${tmp}build.zip .
 
 
 # backup existing default index.html file:

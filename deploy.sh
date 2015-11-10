@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $# -eq 0 ]
   then
-    echo "No arguments supplied"
+    echo "No version supplied"
 	exit
 fi
 

@@ -24,8 +24,8 @@ os: linux
 #   "files" section altogether. A blank or incomplete "files" section
 #   may cause associated deployments to fail.
 files:
-  - source: /build
-    destination: /usr/share/nginx/html/i-bog/
+  # - source: /build
+    # destination: /usr/share/nginx/html/i-bog/
   - source: /build.zip
     destination: /tmp/i-bog/
 

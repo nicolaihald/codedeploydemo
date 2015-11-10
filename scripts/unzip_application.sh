@@ -7,8 +7,12 @@ if [ ! -d tmp ]; then
 	mkdir -p tmp
 fi
 
-echo 'Unzipping to ...' ${tmp}
-cp -rf build.zip ${tmp} 	
+echo 'Copying zip-file to: ' ${tmp}
+cp -rf build.zip ${tmp} 
+
+	
 # unzip app build:
-unzip ${tmp}build.zip .
+zipfile=${tmp}build.zip
+echo 'Unzipping to: '
+unzip ${zipfile} -d '/usr/share/nginx/html/i-bog/'
 
